@@ -1,0 +1,9 @@
+categories api : 
+Total product links scraped within 60 seconds: 421 | 5 tabs
+
+search pl api:
+--- Scraping Summary ---
+Total products scraped for 'fruits': 120
+Total time taken: 27.46 seconds.
+Average product links scraped in 60 seconds: 262.21
+
