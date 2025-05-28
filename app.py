@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from extract_pdp import extract_pdp_api
 from extract_pl_categories import extract_category_pl_api
 from extract_pl_search import extract_search_pl_api
-from playwright.async_api import async_playwright, BrowserContext, Page, Browser
+from playwright.async_api import async_playwright
+import time
 
 app = FastAPI()
 
@@ -38,16 +39,30 @@ async def root():
 
 @app.get("/extract_pdp_api")
 async def extract_pdp_api_endpoint(product_url: str):
-    return await extract_pdp_api(product_url, app.state.browser)
+    start_time = time.perf_counter()
+    result = await extract_pdp_api(product_url, app.state.browser)
+    end_time = time.perf_counter()
+    timetaken = end_time - start_time
+    return {"result": result, "timetaken": timetaken}
 
 @app.get("/extract_search_pl_api/{query}")
 async def extract_search_pl_api_endpoint(query: str):
-    return await extract_search_pl_api(query, app.state.browser)
+    start_time = time.perf_counter()
+    result =  await extract_search_pl_api(query, app.state.browser)
+    end_time = time.perf_counter()
+    timetaken = end_time - start_time
+    num_products = len(result)
+    return {"result": result, "timetaken": timetaken, "num_products": num_products}
 
 @app.get("/extract_category_pl_api")
 async def extract_category_pl_api_endpoint():
-    return await extract_category_pl_api(app.state.browser)
+    start_time = time.perf_counter()
+    result = await extract_category_pl_api(app.state.browser)
+    end_time = time.perf_counter()
+    timetaken = end_time - start_time
+    num_products = len(result)
+    return {"result": result, "timetaken": timetaken}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
