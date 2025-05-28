@@ -36,7 +36,7 @@ async def shutdown_event():
 async def root():
     return {"message": "api running"}
 
-@app.get("/extract_pdp_api/{product_url}")
+@app.get("/extract_pdp_api")
 async def extract_pdp_api_endpoint(product_url: str):
     return await extract_pdp_api(product_url, app.state.browser)
 
